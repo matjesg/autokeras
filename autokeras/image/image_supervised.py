@@ -142,15 +142,16 @@ class ImageSupervised(DeepTaskSupervised, ABC):
         x = np.array(x)
         y = np.array(y)
 
-        if self.verbose:
-            print("Preprocessing the images.")
-
-        self.resize_shape = compute_image_resize_params(x)
-
-        x = resize_image_data(x, self.resize_shape)
-
-        if self.verbose:
-            print("Preprocessing finished.")
+        print("Skip preprocessing images.")
+        # if self.verbose:
+        #     print("Preprocessing the images.")
+        #
+        # self.resize_shape = compute_image_resize_params(x)
+        #
+        # x = resize_image_data(x, self.resize_shape)
+        #
+        # if self.verbose:
+        #     print("Preprocessing finished.")
 
         super().fit(x, y, time_limit)
 

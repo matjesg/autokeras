@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
-from torchvision.transforms import Normalize, ToPILImage, RandomCrop, RandomHorizontalFlip, ToTensor, Compose
+from torchvision.transforms import Normalize, ToPILImage, RandomCrop, RandomHorizontalFlip, ToTensor, Compose, RandomAffine
 
 from autokeras.constant import Constant
 from autokeras.preprocessor import DataTransformer
@@ -40,20 +40,23 @@ class ImageDataTransformer(DataTransformer):
             A DataLoader class instance.
         """
         short_edge_length = min(data.shape[1], data.shape[2])
-        common_list = [Normalize(torch.Tensor(self.mean), torch.Tensor(self.std))]
+        # common_list = [Normalize(torch.Tensor(self.mean), torch.Tensor(self.std))]
+        common_list = []
         if self.augment:
             compose_list = [ToPILImage(),
-                            RandomCrop(data.shape[1:3], padding=4),
-                            RandomHorizontalFlip(),
+                            # RandomCrop(data.shape[1:3], padding=4),
+                            # RandomHorizontalFlip(),
+                            RandomAffine(degrees=0, translate=(0.1,0), scale=None, shear=None, resample=False, fillcolor=0),
                             ToTensor()
-                            ] + common_list + [Cutout(n_holes=Constant.CUTOUT_HOLES,
-                                                      length=int(short_edge_length * Constant.CUTOUT_RATIO))]
+                            ] + common_list #+ [Cutout(n_holes=Constant.CUTOUT_HOLES,
+                                            #          length=int(short_edge_length * Constant.CUTOUT_RATIO))]
         else:
             compose_list = common_list
 
         if len(data.shape) != 4:
             compose_list = []
 
+        print("Augmentation list:", compose_list)
         dataset = self._transform(compose_list, data, targets)
 
         if batch_size is None:

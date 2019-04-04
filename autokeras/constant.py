@@ -16,7 +16,7 @@ class Constant:
     KERNEL_LAMBDA = 1.0
     T_MIN = 0.0001
     N_NEIGHBOURS = 8
-    MAX_MODEL_SIZE = (1 << 25)
+    MAX_MODEL_SIZE = (1 << 15) # Default: 25
     MAX_LAYER_WIDTH = 4096
     MAX_LAYERS = 200
 
@@ -47,7 +47,7 @@ class Constant:
     MAX_ITER_NUM = 200
     MIN_LOSS_DEC = 1e-4
     MAX_NO_IMPROVEMENT_NUM = 5
-    MAX_BATCH_SIZE = 128
+    MAX_BATCH_SIZE = 16 # Default: 128
     LIMIT_MEMORY = False
     SEARCH_MAX_ITER = 200
 
